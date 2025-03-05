@@ -20,6 +20,7 @@ public class start {
     public static int MnsPeriod = 120;
     public static int limitNum = 2;// oldMsgCheck
     public static String message = token.message;
+    public static String channelID = "0000000000000000000";
 
     public static int timeMilisSpam = 1000; // ms
     public static int rngMinTime = 1; // s
@@ -33,7 +34,7 @@ public class start {
                 try {
                     SetDiscordApi();
                     CheckAndSpam(message, channels.channelsGlobal()); 
-                    main.api.getServerTextChannelById("1081921428720455772").get().sendMessage(token.message).get();
+                    main.api.getServerTextChannelById(channelID).get().sendMessage(token.message).get();
                     System.out.println("Finish");
                 } catch (Exception e) {
                     throw new RuntimeException(e);

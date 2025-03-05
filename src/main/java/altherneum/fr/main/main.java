@@ -36,8 +36,8 @@ public class main {
         spamGroupMessage("1326436358176116766", 25, "oups, pas fait exprès :shush:");
     }
 
-    public static void getAllEmojiID() {
-        Server server = api.getServerById("1081921426333909072").get();
+    public static void getAllEmojiID(String serverID) {
+        Server server = api.getServerById(serverID).get();
         for (CustomEmoji customEmoji : server.getCustomEmojis()) {
             System.out.println("<:" + customEmoji.getName() + ":" + customEmoji.getId() + ">");
         }
