@@ -26,6 +26,7 @@ public class main {
             throws LoginException, ExecutionException, InterruptedException, IOException {
         // start.spamScheduled();
         SetDiscordApi();
+        sendGif("https://media1.tenor.com/m/Rb5WeEOwEJUAAAAd/token-grabber-thanos.gif", "1332057126155063336");
         // spamUser("0000000000000000", 100, "?");
         // ListServerTextChannel("0000000000000000", true);
         // spamChannel("0000000000000000", 100, "null");
@@ -41,6 +42,12 @@ public class main {
         for (CustomEmoji customEmoji : server.getCustomEmojis()) {
             System.out.println("<:" + customEmoji.getName() + ":" + customEmoji.getId() + ">");
         }
+    }
+
+    public static void sendGif(gifURL, channelID){
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setImage(gifURL);
+        builder.send(main.api.getTextChannelById(channelID).get());
     }
 
     public static void spamUser(String ID, int count, String message) throws InterruptedException, ExecutionException {
