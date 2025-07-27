@@ -7,6 +7,7 @@ import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.emoji.CustomEmoji;
 import org.javacord.api.entity.message.Message;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
@@ -26,15 +27,14 @@ public class main {
             throws LoginException, ExecutionException, InterruptedException, IOException {
         // start.spamScheduled();
         SetDiscordApi();
-        sendGif("https://media1.tenor.com/m/Rb5WeEOwEJUAAAAd/token-grabber-thanos.gif", "1332057126155063336");
+        //Not working// sendGif("https://media1.tenor.com/m/Rb5WeEOwEJUAAAAd/token-grabber-thanos.gif", "1332057126155063336");
         // spamUser("0000000000000000", 100, "?");
         // ListServerTextChannel("0000000000000000", true);
         // spamChannel("0000000000000000", 100, "null");
         // spamAllMessageEmoji("0000000000000000", "📧", 12345, "0000000000000000");
         // spamAllMessageEmojiForUser("0000000000000000", "📧", 12345, "0000000000000000", "0000000000000000");
         // cleanServerMessage("0000000000000000");
-
-        spamGroupMessage("1326436358176116766", 25, "oups, pas fait exprès :shush:");
+        // spamGroupMessage("1326436358176116766", 25, "oups, pas fait exprès :shush:");
     }
 
     public static void getAllEmojiID(String serverID) {
@@ -44,10 +44,10 @@ public class main {
         }
     }
 
-    public static void sendGif(gifURL, channelID){
+    public static void sendGif(String gifURL, String channelID) throws InterruptedException, ExecutionException{
         EmbedBuilder builder = new EmbedBuilder();
         builder.setImage(gifURL);
-        builder.send(main.api.getTextChannelById(channelID).get());
+        main.api.getTextChannelById(channelID).get().sendMessage(builder).get();
     }
 
     public static void spamUser(String ID, int count, String message) throws InterruptedException, ExecutionException {
@@ -142,7 +142,7 @@ public class main {
                 for (Message message : serverTextChannel.getMessages(0).get()) {
                     System.out.println("Message check");
                     if (message.getAuthor().getIdAsString().equals(main.api.getYourself().getIdAsString())) {
-                        message.delete();
+                        message.delete().get();
                         System.out.println("Message delete");
                     }
                 }
