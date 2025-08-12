@@ -1,3 +1,5 @@
 *target/
 *token*
-*main/token.*
+*main/token*
+src/main/java/altherneum/fr/main/token.java
+*/main/token.java
