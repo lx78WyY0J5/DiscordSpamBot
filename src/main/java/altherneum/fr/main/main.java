@@ -22,8 +22,7 @@ public class main {
         api = new DiscordApiBuilder().setToken(token.token).setAccountType(AccountType.CLIENT).login().join();
     }
 
-    public static void main(String[] args)
-            throws LoginException, ExecutionException, InterruptedException, IOException {
+    public static void main(String[] args) throws LoginException, ExecutionException, InterruptedException, IOException {
         // start.spamScheduled();
         SetDiscordApi();
         //Not working// sendGif("https://media1.tenor.com/m/Rb5WeEOwEJUAAAAd/token-grabber-thanos.gif", "1332057126155063336");
