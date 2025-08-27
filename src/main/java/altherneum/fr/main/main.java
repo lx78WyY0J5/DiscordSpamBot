@@ -45,11 +45,9 @@ public class main {
      
     public static String GifPicker(){
         int ListSize = list.size();
-        System.out.println(ListSize);
 
         Random random = new Random();
         int valueToPick = random.nextInt(ListSize);
-        System.out.println("random : " + valueToPick);
         return "https://tenor.com/view/" + list.get(valueToPick);
     } 
 
