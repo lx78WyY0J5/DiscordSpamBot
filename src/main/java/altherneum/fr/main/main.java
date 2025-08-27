@@ -4,15 +4,21 @@ import org.javacord.api.AccountType;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.channel.ServerTextChannel;
+import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.emoji.CustomEmoji;
 import org.javacord.api.entity.message.Message;
+import org.javacord.api.entity.message.MessageBuilder;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
 import javax.security.auth.login.LoginException;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 public class main {
@@ -25,8 +31,8 @@ public class main {
     public static void main(String[] args) throws LoginException, ExecutionException, InterruptedException, IOException {
         // start.spamScheduled();
         SetDiscordApi();
-        //Not working// sendGif("https://media1.tenor.com/m/Rb5WeEOwEJUAAAAd/token-grabber-thanos.gif", "1332057126155063336");
-        // spamUser("0000000000000000", 100, "?");
+        //spamUser("0000000000000000000", 10, "ABC", false);
+        //spamUser("0000000000000000000", 25, GifPicker(), true);
         // ListServerTextChannel("0000000000000000", true);
         //spamChannel("0000000000000000", 100, "ABC");
         // spamAllMessageEmoji("0000000000000000", "📧", 12345, "0000000000000000");
@@ -35,6 +41,18 @@ public class main {
         // spamGroupMessage("1326436358176116766", 25, "oups, pas fait exprès :shush:");
     }
 
+    public static ArrayList<String> list = new ArrayList<>(Arrays.asList("spammer-no-spamming-dora-gif-19107257", "junk-mail-spam-mail-messages-the-bagheads-gif-11565788", "spam-spam-not-funny-gif-22146813", "spam-spam-button-pressing-button-insert-controller-here-smash-gif-17122318", "checking-inbox-mail-steve-harvey-inbox-email-gif-17917048", "pepegachat-pepega-chat-chatting-gif-19762143", "discord-mod-use-bots-in-bot-command-spam-bot-command-spam-discord-mod-bots-gif-22177336", "domain-expansion-will-spam-domain-expansion-wills-spam-gif-7021287657582182369", "discord-ping-discord-ping-pings-mass-ping-gif-2196332929166408226", "ping-gif-20035980", "lit-silly-tasty-hello-banana-phone-gif-5555120", "arch-linux-user-femboy-arch-linux-gif-7369320239770547824", "linux-chad-arch-arch-linux-chad-user-gif-21904978", "windows11-windows-leak-windows-microsoft-windows11-windows11meme-gif-22092213", "windows-users-windows10-windows-update-windows-linux-gif-25806046", "windows-users-gif-26552946"));
+     
+    public static String GifPicker(){
+        int ListSize = list.size();
+        System.out.println(ListSize);
+
+        Random random = new Random();
+        int valueToPick = random.nextInt(ListSize);
+        System.out.println("random : " + valueToPick);
+        return "https://tenor.com/view/" + list.get(valueToPick);
+    } 
+
     public static void getAllEmojiID(String serverID) {
         Server server = api.getServerById(serverID).get();
         for (CustomEmoji customEmoji : server.getCustomEmojis()) {
@@ -42,18 +60,16 @@ public class main {
         }
     }
 
-    public static void sendGif(String gifURL, String channelID) throws InterruptedException, ExecutionException{
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setImage(gifURL);
-        main.api.getTextChannelById(channelID).get().sendMessage(builder).get();
-    }
-
-    public static void spamUser(String ID, int count, String message) throws InterruptedException, ExecutionException {
+ public static void spamUser(String ID, int count, String message, boolean GifSpamer) throws InterruptedException, ExecutionException {
         Thread t0 = new Thread(() -> {
             try {
                 int i = 0;
                 while (i < count) {
-                    main.api.getUserById(ID).get().sendMessage(message).get();
+                    String messageFinal = message;
+                    if(GifSpamer){
+                        messageFinal = GifPicker();
+                    }
+                    main.api.getUserById(ID).get().sendMessage(messageFinal).get();
                     i++;
                     Thread.sleep(150);
                 }
