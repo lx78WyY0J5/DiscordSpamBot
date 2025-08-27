@@ -28,7 +28,7 @@ public class main {
         //Not working// sendGif("https://media1.tenor.com/m/Rb5WeEOwEJUAAAAd/token-grabber-thanos.gif", "1332057126155063336");
         // spamUser("0000000000000000", 100, "?");
         // ListServerTextChannel("0000000000000000", true);
-        // spamChannel("0000000000000000", 100, "null");
+        //spamChannel("0000000000000000", 100, "ABC");
         // spamAllMessageEmoji("0000000000000000", "📧", 12345, "0000000000000000");
         // spamAllMessageEmojiForUser("0000000000000000", "📧", 12345, "0000000000000000", "0000000000000000");
         // cleanServerMessage("0000000000000000");
