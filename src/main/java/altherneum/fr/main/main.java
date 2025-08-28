@@ -38,7 +38,9 @@ public class main {
         // spamAllMessageEmoji("0000000000000000", "📧", 12345, "0000000000000000");
         // spamAllMessageEmojiForUser("0000000000000000", "📧", 12345, "0000000000000000", "0000000000000000");
         // cleanServerMessage("0000000000000000");
-        // spamGroupMessage("1326436358176116766", 25, "oups, pas fait exprès :shush:");
+        // CleanChannelMessage("0000000000000000");
+        // CleanUserMessage("0000000000000000");
+        // spamGroupMessage("0000000000000000", 25, "oups, pas fait exprès :shush:");
     }
 
     public static ArrayList<String> list = new ArrayList<>(Arrays.asList("kadava-gif-16228050557131628755", "spammer-no-spamming-dora-gif-19107257", "junk-mail-spam-mail-messages-the-bagheads-gif-11565788", "spam-spam-not-funny-gif-22146813", "spam-spam-button-pressing-button-insert-controller-here-smash-gif-17122318", "checking-inbox-mail-steve-harvey-inbox-email-gif-17917048", "pepegachat-pepega-chat-chatting-gif-19762143", "discord-mod-use-bots-in-bot-command-spam-bot-command-spam-discord-mod-bots-gif-22177336", "domain-expansion-will-spam-domain-expansion-wills-spam-gif-7021287657582182369", "discord-ping-discord-ping-pings-mass-ping-gif-2196332929166408226", "ping-gif-20035980", "lit-silly-tasty-hello-banana-phone-gif-5555120", "arch-linux-user-femboy-arch-linux-gif-7369320239770547824", "linux-chad-arch-arch-linux-chad-user-gif-21904978", "windows11-windows-leak-windows-microsoft-windows11-windows11meme-gif-22092213", "windows-users-windows10-windows-update-windows-linux-gif-25806046", "windows-users-gif-26552946"));
@@ -58,7 +60,7 @@ public class main {
         }
     }
 
- public static void spamUser(String ID, int count, String message, boolean GifSpamer) throws InterruptedException, ExecutionException {
+    public static void spamUser(String ID, int count, String message, boolean GifSpamer) throws InterruptedException, ExecutionException {
         Thread t0 = new Thread(() -> {
             try {
                 int i = 0;
@@ -149,15 +151,31 @@ public class main {
     {
         Server server = main.api.getServerById(ServerID).get();
         for (ServerTextChannel serverTextChannel : server.getTextChannels()) {
-            System.out.println(ServerID + " : " + serverTextChannel.getName());
-            if (serverTextChannel.canWrite(main.api.getYourself())) {
-                for (Message message : serverTextChannel.getMessages(0).get()) {
-                    System.out.println("Message check");
-                    if (message.getAuthor().getIdAsString().equals(main.api.getYourself().getIdAsString())) {
-                        message.delete().get();
-                        System.out.println("Message delete");
-                    }
+            CleanChannelMessage(serverTextChannel.getIdAsString());
+        }
+    }
+
+    public static void CleanChannelMessage(String channelID) throws InterruptedException, ExecutionException{
+        ServerTextChannel serverTextChannel = main.api.getServerTextChannelById(channelID).get();
+        System.out.println(serverTextChannel.getName());
+        if (serverTextChannel.canWrite(main.api.getYourself())) {
+            for (Message message : serverTextChannel.getMessages(0).get()) {
+                System.out.println("Message check");
+                if (message.getAuthor().getIdAsString().equals(main.api.getYourself().getIdAsString())) {
+                    message.delete().get();
+                    System.out.println("Message delete");
                 }
+            }
+        }
+    }
+
+     public static void CleanUserMessage(String channelID) throws InterruptedException, ExecutionException{
+        TextChannel textChannel = main.api.getTextChannelById(channelID).get();
+        for (Message message : textChannel.getMessages(0).get()) {
+            System.out.println("Message check : " + message.getContent());
+            if (message.getAuthor().getIdAsString().equals(main.api.getYourself().getIdAsString())) {
+                message.delete().get();
+                System.out.println("Message delete");
             }
         }
     }
