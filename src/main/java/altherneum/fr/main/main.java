@@ -10,6 +10,9 @@ import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.security.auth.login.LoginException;
 
 import java.io.IOException;
@@ -30,6 +33,7 @@ public class main {
         SetDiscordApi();
         //spamUser("0000000000000000000", 10, "ABC", false);
         //spamUser("0000000000000000000", 25, GifPicker(), true);
+        //dumpVideoFromChannel("0000000000000000000");
         // ListServerTextChannel("0000000000000000", true);
         //spamChannel("0000000000000000", 100, "ABC");
         // spamAllMessageEmoji("0000000000000000", "📧", 12345, "0000000000000000");
@@ -48,7 +52,22 @@ public class main {
         Random random = new Random();
         int valueToPick = random.nextInt(ListSize);
         return "https://tenor.com/view/" + list.get(valueToPick);
-    } 
+    }
+
+    public static void dumpVideoFromChannel(String channelID) throws InterruptedException, ExecutionException{
+        ServerTextChannel serverTextChannel = main.api.getServerTextChannelById(channelID).get();
+        Pattern p = Pattern.compile(".*youtu(.*).*");
+        for(Message message : serverTextChannel.getMessages(9999).get()){
+            String messageText = message.getEmbeds().getFirst().getDescription().get().toString();
+            if(messageText.contains("https://www.youtube.com/") || messageText.contains("https://youtu.be/") || messageText.contains("https://youtube.com/shorts/")){
+                Matcher m = p.matcher(messageText);
+                if(m.find()){
+                    System.out.println(m.group(1));
+                    //message.delete().get();
+                }
+            }
+        }
+    }
 
     public static void getAllEmojiID(String serverID) {
         Server server = api.getServerById(serverID).get();
