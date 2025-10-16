@@ -13,9 +13,20 @@ import org.javacord.api.entity.user.User;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.management.Query;
 import javax.security.auth.login.LoginException;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -31,11 +42,15 @@ public class main {
     public static void main(String[] args) throws LoginException, ExecutionException, InterruptedException, IOException {
         // start.spamScheduled();
         SetDiscordApi();
-        //spamUser("0000000000000000000", 10, "ABC", false);
+        // spamUser("0000000000000000000", 10, "ABC", false);
         //spamUser("0000000000000000000", 25, GifPicker(), true);
-        //dumpVideoFromChannel("0000000000000000000");
+        String URL = GifPicker(false, getRandomEmoji("ArchLinux"));
+        System.out.println(URL);
+        main.api.getUserById("1082015905405481090").get().sendMessage(""+ URL);
+        // spamUser("0000000000000000000", 1, URL, true);
+        // dumpVideoFromChannel("0000000000000000000");
         // ListServerTextChannel("0000000000000000", true);
-        //spamChannel("0000000000000000", 100, "ABC");
+        // spamChannel("0000000000000000", 100, "ABC");
         // spamAllMessageEmoji("0000000000000000", "📧", 12345, "0000000000000000");
         // spamAllMessageEmojiForUser("0000000000000000", "📧", 12345, "0000000000000000", "0000000000000000");
         // cleanServerMessage("0000000000000000");
@@ -46,12 +61,43 @@ public class main {
 
     public static ArrayList<String> list = new ArrayList<>(Arrays.asList("kadava-gif-16228050557131628755", "spammer-no-spamming-dora-gif-19107257", "junk-mail-spam-mail-messages-the-bagheads-gif-11565788", "spam-spam-not-funny-gif-22146813", "spam-spam-button-pressing-button-insert-controller-here-smash-gif-17122318", "checking-inbox-mail-steve-harvey-inbox-email-gif-17917048", "pepegachat-pepega-chat-chatting-gif-19762143", "discord-mod-use-bots-in-bot-command-spam-bot-command-spam-discord-mod-bots-gif-22177336", "domain-expansion-will-spam-domain-expansion-wills-spam-gif-7021287657582182369", "discord-ping-discord-ping-pings-mass-ping-gif-2196332929166408226", "ping-gif-20035980", "lit-silly-tasty-hello-banana-phone-gif-5555120", "arch-linux-user-femboy-arch-linux-gif-7369320239770547824", "linux-chad-arch-arch-linux-chad-user-gif-21904978", "windows11-windows-leak-windows-microsoft-windows11-windows11meme-gif-22092213", "windows-users-windows10-windows-update-windows-linux-gif-25806046", "windows-users-gif-26552946"));
      
-    public static String GifPicker(){
+    public static String GifPicker(Boolean fixURL, String URL){
         int ListSize = list.size();
 
-        Random random = new Random();
-        int valueToPick = random.nextInt(ListSize);
-        return "https://tenor.com/view/" + list.get(valueToPick);
+        if(fixURL == true){
+            Random random = new Random();
+            int valueToPick = random.nextInt(ListSize);
+            return "https://tenor.com/view/" + list.get(valueToPick);
+        }
+        else {
+            return "https://tenor.com/view/" + URL;
+        }
+    }
+
+    public static String getRandomEmoji(String QueryURL) throws MalformedURLException, IOException, InterruptedException{
+        final String API_KEY = "LIVDSRZULELA";
+        
+        final String searchTerm = QueryURL;
+
+        final String urlPath = String.format("https://g.tenor.com/v1/search?q=%1$s&key=%2$s&limit=%3$s", searchTerm, API_KEY, 1);
+        
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(urlPath))
+            .GET()
+            .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        
+        //System.out.println(response.body().toString());
+
+        Pattern p = Pattern.compile("\"itemurl\": \"https://tenor.com/view/(.*)\"");
+        Matcher m = p.matcher(response.body().toString());
+        if(m.find()){
+            return m.group(1);
+        }
+        return "";
     }
 
     public static void dumpVideoFromChannel(String channelID) throws InterruptedException, ExecutionException{
@@ -83,7 +129,7 @@ public class main {
                 while (i < count) {
                     String messageFinal = message;
                     if(GifSpamer){
-                        messageFinal = GifPicker();
+                        messageFinal = GifPicker(true, "");
                     }
                     main.api.getUserById(ID).get().sendMessage(messageFinal).get();
                     i++;
