@@ -40,14 +40,29 @@ public class main {
     }
 
     public static void main(String[] args) throws LoginException, ExecutionException, InterruptedException, IOException {
-        // start.spamScheduled();
+        // Merci de configurer les class avant de lancer
+
+        Boolean pubMethode = false;
+        if(pubMethode == true){
+            start.spamScheduled();
+        }
+        else{
+            CustomSpamFunctions();
+        }
+    }
+
+    public static void CustomSpamFunctions() throws LoginException, ExecutionException, InterruptedException, IOException {
         SetDiscordApi();
+
         // spamUser("0000000000000000000", 10, "ABC", false);
-        //spamUser("0000000000000000000", 25, GifPicker(), true);
-        String URL = GifPicker(false, getRandomEmoji("ArchLinux"));
-        System.out.println(URL);
-        main.api.getUserById("1082015905405481090").get().sendMessage(""+ URL);
-        // spamUser("0000000000000000000", 1, URL, true);
+        // spamUser("0000000000000000000", 25, GifPicker(), true);
+
+        // String URL = GifPicker(false, getRandomEmoji("ArchLinux"));
+        // System.out.println(URL);
+        // main.api.getUserById("0000000000000000000").get().sendMessage(""+ URL);
+
+        // spamUser("992567363075571743", 100, URL, true);
+        // spamUser("000000000000000000", 100, "null", true);
         // dumpVideoFromChannel("0000000000000000000");
         // ListServerTextChannel("0000000000000000", true);
         // spamChannel("0000000000000000", 100, "ABC");

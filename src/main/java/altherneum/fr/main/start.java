@@ -10,7 +10,9 @@ import java.util.concurrent.ExecutionException;
 import static altherneum.fr.main.main.SetDiscordApi;
 
 public class start {
-
+    public static String YourUserID = "123456789123456789";
+    public static String CustomMessage = "Super message that will be spammed :3 \nSecond line with 😎\nAnother line";
+    
     public static int totalMessage = 0;
     public static int totalMaxMessage;
     public static int totalMaxMessageDivider = 4;
@@ -19,7 +21,7 @@ public class start {
     public static int totalErrorMissingChan = 0;
     public static int MnsPeriod = 120;
     public static int limitNum = 2;// oldMsgCheck
-    public static String message = token.message;
+    public static String message = CustomMessage;
     public static String channelID = "0000000000000000000";
 
     public static int timeMilisSpam = 1000; // ms
@@ -34,7 +36,7 @@ public class start {
                 try {
                     SetDiscordApi();
                     CheckAndSpam(message, channels.channelsGlobal()); 
-                    main.api.getServerTextChannelById(channelID).get().sendMessage(token.message).get();
+                    main.api.getServerTextChannelById(channelID).get().sendMessage(CustomMessage).get();
                     System.out.println("Finish");
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -133,7 +135,7 @@ public class start {
             throws ExecutionException, InterruptedException {
         MessageSet messages = serverTextChannel.getMessages(limitNum).get();
         for (Message message : messages) {
-            if (message.getAuthor().getIdAsString().equals(token.UserID)) {
+            if (message.getAuthor().getIdAsString().equals(YourUserID)) {
                 return true;
             }
         }
