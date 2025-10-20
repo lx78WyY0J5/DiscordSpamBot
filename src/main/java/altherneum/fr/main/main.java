@@ -42,7 +42,7 @@ public class main {
     public static void main(String[] args) throws LoginException, ExecutionException, InterruptedException, IOException {
         // Merci de configurer les class avant de lancer
 
-        Boolean pubMethode = false;
+        boolean pubMethode = false;
         if(pubMethode == true){
             start.spamScheduled();
         }
@@ -56,13 +56,11 @@ public class main {
 
         // spamUser("0000000000000000000", 10, "ABC", false);
         
-        // spamUser("0000000000000000000", 25, GifPicker(), true);
+        //spamUser("0000000000000000000", 5, GifPicker(true, null), true); // Random GIF from array list
 
-        // String URL = GifPicker(false, getRandomEmoji("ArchLinux"));
-        // System.out.println(URL);
-        // main.api.getUserById("0000000000000000000").get().sendMessage(""+ URL);
+        //spamUser("0000000000000000000", 1, GifPicker(false, getRandomEmoji("ABC")), false); //GIF from Query with API
 
-        // spamUser("992567363075571743", 100, URL, true);
+        // spamUser("000000000000000000", 100, URL, true);
 
         // spamUser("000000000000000000", 100, "null", true);
 
@@ -87,17 +85,21 @@ public class main {
 
     public static ArrayList<String> list = new ArrayList<>(Arrays.asList("kadava-gif-16228050557131628755", "spammer-no-spamming-dora-gif-19107257", "junk-mail-spam-mail-messages-the-bagheads-gif-11565788", "spam-spam-not-funny-gif-22146813", "spam-spam-button-pressing-button-insert-controller-here-smash-gif-17122318", "checking-inbox-mail-steve-harvey-inbox-email-gif-17917048", "pepegachat-pepega-chat-chatting-gif-19762143", "discord-mod-use-bots-in-bot-command-spam-bot-command-spam-discord-mod-bots-gif-22177336", "domain-expansion-will-spam-domain-expansion-wills-spam-gif-7021287657582182369", "discord-ping-discord-ping-pings-mass-ping-gif-2196332929166408226", "ping-gif-20035980", "lit-silly-tasty-hello-banana-phone-gif-5555120", "arch-linux-user-femboy-arch-linux-gif-7369320239770547824", "linux-chad-arch-arch-linux-chad-user-gif-21904978", "windows11-windows-leak-windows-microsoft-windows11-windows11meme-gif-22092213", "windows-users-windows10-windows-update-windows-linux-gif-25806046", "windows-users-gif-26552946"));
      
-    public static String GifPicker(Boolean fixURL, String URL){
-        int ListSize = list.size();
+    public static String GifPicker(boolean fixURL, String URL){
+
+        System.out.println(fixURL + " ; " + URL);
 
         if(fixURL == true){
+            int ListSize = list.size();
             Random random = new Random();
             int valueToPick = random.nextInt(ListSize);
             return "https://tenor.com/view/" + list.get(valueToPick);
         }
-        else {
+        else if(fixURL == false) {
             return "https://tenor.com/view/" + URL;
         }
+
+        return "";
     }
 
     public static String getRandomEmoji(String QueryURL) throws MalformedURLException, IOException, InterruptedException{
@@ -148,13 +150,13 @@ public class main {
         }
     }
 
-    public static void spamUser(String ID, int count, String message, boolean GifSpamer) throws InterruptedException, ExecutionException {
+    public static void spamUser(String ID, int count, String message, boolean RandomGifSpamer) throws InterruptedException, ExecutionException {
         Thread t0 = new Thread(() -> {
             try {
                 int i = 0;
                 while (i < count) {
                     String messageFinal = message;
-                    if(GifSpamer){
+                    if(RandomGifSpamer){
                         messageFinal = GifPicker(true, "");
                     }
                     main.api.getUserById(ID).get().sendMessage(messageFinal).get();
@@ -268,7 +270,7 @@ public class main {
         }
     }
     
-    public static void ListServerTextChannel(String ServerID, Boolean ShowHidden) {
+    public static void ListServerTextChannel(String ServerID, boolean ShowHidden) {
         Server server = main.api.getServerById(ServerID).get();
         for (ServerTextChannel serverTextChannel : server.getTextChannels()) {
             if (!serverTextChannel.canSee(main.api.getYourself()) && ShowHidden) {
