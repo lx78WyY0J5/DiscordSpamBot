@@ -3,6 +3,7 @@ package altherneum.fr.main;
 import org.javacord.api.AccountType;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
+import org.javacord.api.entity.channel.ServerChannel;
 import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.emoji.CustomEmoji;
@@ -13,22 +14,17 @@ import org.javacord.api.entity.user.User;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.management.Query;
 import javax.security.auth.login.LoginException;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
@@ -54,11 +50,13 @@ public class main {
     public static void CustomSpamFunctions() throws LoginException, ExecutionException, InterruptedException, IOException {
         SetDiscordApi();
 
-        // spamUser("0000000000000000000", 10, "ABC", false);
-        
-        //spamUser("0000000000000000000", 5, GifPicker(true, null), true); // Random GIF from array list
+        renameAllChannels("1081921426333909072", "﹒", "▪️");
 
-        //spamUser("0000000000000000000", 1, GifPicker(false, getRandomEmoji("ABC")), false); //GIF from Query with API
+        // spamUser("1082015905405481090", 10, "ABC", false);
+        
+        // spamUser("1082015905405481090", 50, GifPicker(true, null), true); // Random GIF from array list
+
+        // spamUser("000000000000000000", 1, GifPicker(false, getRandomEmoji("ABC")), false); //GIF from Query with API
 
         // spamUser("000000000000000000", 100, URL, true);
 
@@ -81,6 +79,24 @@ public class main {
         // CleanUserMessage("0000000000000000");
 
         // spamGroupMessage("0000000000000000", 25, "oups, pas fait exprès :shush:");
+
+        // spamAllChannelInServer("0000000000000000000");
+    }
+
+    public static void renameAllChannels(String serverID, String charToReplace, String newChar) throws InterruptedException, ExecutionException{
+        Server server = main.api.getServerById(serverID).get();
+        List<ServerChannel> serverChannelList = server.getChannels();
+
+        for(ServerChannel serverChannel : serverChannelList){
+            System.out.println(serverChannel.getName());
+            String ChannelName = serverChannel.getName();
+            if(ChannelName.contains(charToReplace)){
+                System.out.print(" : Starting to replace the name !");
+                String newName = ChannelName.replace(charToReplace, newChar);
+                serverChannel.updateName(newName).get();
+                System.out.println("New name : " + serverChannel.getName());
+            }
+        }
     }
 
     public static ArrayList<String> list = new ArrayList<>(Arrays.asList("kadava-gif-16228050557131628755", "spammer-no-spamming-dora-gif-19107257", "junk-mail-spam-mail-messages-the-bagheads-gif-11565788", "spam-spam-not-funny-gif-22146813", "spam-spam-button-pressing-button-insert-controller-here-smash-gif-17122318", "checking-inbox-mail-steve-harvey-inbox-email-gif-17917048", "pepegachat-pepega-chat-chatting-gif-19762143", "discord-mod-use-bots-in-bot-command-spam-bot-command-spam-discord-mod-bots-gif-22177336", "domain-expansion-will-spam-domain-expansion-wills-spam-gif-7021287657582182369", "discord-ping-discord-ping-pings-mass-ping-gif-2196332929166408226", "ping-gif-20035980", "lit-silly-tasty-hello-banana-phone-gif-5555120", "arch-linux-user-femboy-arch-linux-gif-7369320239770547824", "linux-chad-arch-arch-linux-chad-user-gif-21904978", "windows11-windows-leak-windows-microsoft-windows11-windows11meme-gif-22092213", "windows-users-windows10-windows-update-windows-linux-gif-25806046", "windows-users-gif-26552946"));
@@ -168,6 +184,16 @@ public class main {
             }
         });
         t0.start();
+    }
+
+
+    public static void spamAllChannelInServer(String ServerID) throws InterruptedException, ExecutionException{
+        for(ServerChannel serverChannel : main.api.getServerById(ServerID).get().getChannels()){
+            System.out.println(serverChannel.getName());
+            if(serverChannel.getType().isTextChannelType()){
+            serverChannel.asServerTextChannel().get().sendMessage("t").get();
+            } 
+        }
     }
 
     public static void spamGroupMessage(String channelID, int count, String text) {
