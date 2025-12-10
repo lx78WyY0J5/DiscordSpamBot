@@ -50,11 +50,11 @@ public class main {
     public static void CustomSpamFunctions() throws LoginException, ExecutionException, InterruptedException, IOException {
         SetDiscordApi();
 
-        renameAllChannels("1081921426333909072", "﹒", "▪️");
+        //renameAllChannels("0000000000000000000", "﹒", "▪️");
 
-        // spamUser("1082015905405481090", 10, "ABC", false);
+        // spamUser("0000000000000000000", 10, "ABC", false);
         
-        // spamUser("1082015905405481090", 50, GifPicker(true, null), true); // Random GIF from array list
+        // spamUser("0000000000000000000", 50, GifPicker(true, null), true); // Random GIF from array list
 
         // spamUser("000000000000000000", 1, GifPicker(false, getRandomEmoji("ABC")), false); //GIF from Query with API
 
