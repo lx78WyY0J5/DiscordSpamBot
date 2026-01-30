@@ -12,7 +12,7 @@ import static altherneum.fr.main.main.SetDiscordApi;
 public class start {
     public static String YourUserID = "123456789123456789";
     public static String CustomMessage = "Super message that will be spammed :3 \nSecond line with 😎\nAnother line";
-    
+
     public static int totalMessage = 0;
     public static int totalMaxMessage;
     public static int totalMaxMessageDivider = 4;

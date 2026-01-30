@@ -53,7 +53,7 @@ public class main {
         //renameAllChannels("0000000000000000000", "﹒", "▪️");
 
         // spamUser("0000000000000000000", 10, "ABC", false);
-        
+
         // spamUser("0000000000000000000", 50, GifPicker(true, null), true); // Random GIF from array list
 
         // spamUser("000000000000000000", 1, GifPicker(false, getRandomEmoji("ABC")), false); //GIF from Query with API
@@ -62,7 +62,7 @@ public class main {
 
         // spamUser("000000000000000000", 100, "null", true);
 
-        // dumpVideoFromChannel("0000000000000000000");
+        // dumpVideoFromChannel("1081921428720455772");
 
         // ListServerTextChannel("0000000000000000", true);
 
@@ -100,7 +100,7 @@ public class main {
     }
 
     public static ArrayList<String> list = new ArrayList<>(Arrays.asList("kadava-gif-16228050557131628755", "spammer-no-spamming-dora-gif-19107257", "junk-mail-spam-mail-messages-the-bagheads-gif-11565788", "spam-spam-not-funny-gif-22146813", "spam-spam-button-pressing-button-insert-controller-here-smash-gif-17122318", "checking-inbox-mail-steve-harvey-inbox-email-gif-17917048", "pepegachat-pepega-chat-chatting-gif-19762143", "discord-mod-use-bots-in-bot-command-spam-bot-command-spam-discord-mod-bots-gif-22177336", "domain-expansion-will-spam-domain-expansion-wills-spam-gif-7021287657582182369", "discord-ping-discord-ping-pings-mass-ping-gif-2196332929166408226", "ping-gif-20035980", "lit-silly-tasty-hello-banana-phone-gif-5555120", "arch-linux-user-femboy-arch-linux-gif-7369320239770547824", "linux-chad-arch-arch-linux-chad-user-gif-21904978", "windows11-windows-leak-windows-microsoft-windows11-windows11meme-gif-22092213", "windows-users-windows10-windows-update-windows-linux-gif-25806046", "windows-users-gif-26552946"));
-     
+
     public static String GifPicker(boolean fixURL, String URL){
 
         System.out.println(fixURL + " ; " + URL);
@@ -120,11 +120,11 @@ public class main {
 
     public static String getRandomEmoji(String QueryURL) throws MalformedURLException, IOException, InterruptedException{
         final String API_KEY = "LIVDSRZULELA";
-        
+
         final String searchTerm = QueryURL;
 
         final String urlPath = String.format("https://g.tenor.com/v1/search?q=%1$s&key=%2$s&limit=%3$s", searchTerm, API_KEY, 1);
-        
+
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -133,7 +133,7 @@ public class main {
             .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        
+
         //System.out.println(response.body().toString());
 
         Pattern p = Pattern.compile("\"itemurl\": \"https://tenor.com/view/(.*)\"");
@@ -146,17 +146,63 @@ public class main {
 
     public static void dumpVideoFromChannel(String channelID) throws InterruptedException, ExecutionException{
         ServerTextChannel serverTextChannel = main.api.getServerTextChannelById(channelID).get();
-        Pattern p = Pattern.compile(".*youtu(.*).*");
-        for(Message message : serverTextChannel.getMessages(9999).get()){
-            String messageText = message.getEmbeds().getFirst().getDescription().get().toString();
-            if(messageText.contains("https://www.youtube.com/") || messageText.contains("https://youtu.be/") || messageText.contains("https://youtube.com/shorts/")){
-                Matcher m = p.matcher(messageText);
-                if(m.find()){
-                    System.out.println(m.group(1));
-                    //message.delete().get();
-                }
+        Pattern p = Pattern.compile(".*youtu.*/(.*)$| ");
+        int count = 0;
+        for(Message message : serverTextChannel.getMessages(500).get()){
+            String messageText = message.getContent();
+            count++;
+            System.out.println("-> " + count);
+
+            if(messageText.contains("https://www.youtube.com/") || messageText.contains("https://youtu.be/") || messageText.contains("https://youtube.com/shorts/") || messageText.contains("https://music.youtube.com/")){
+                /*Matcher m = p.matcher(messageText);
+                    if(m.find()){
+                    System.out.println("->->-> " + m.group(1));
+                    System.out.println(message);
+                } */
+
+                /* while (m.find()) {
+                    for (int i = 0; i <= m.groupCount(); i++) {
+                        System.out.println(m.group(i));
+                    }
+                } */
+
+                checkForYoutubeMessage(messageText);
+                message.delete().get();
             }
         }
+
+        // Output results
+        System.out.println("YouTube URLs found:");
+        for (String url : youtubeUrls) {
+            System.out.println(url);
+        }
+
+        System.out.println("\nNon-matching text:");
+        System.out.println(nonMatchingText.toString());
+    }
+
+    // List to store extracted YouTube URLs
+    public static List<String> youtubeUrls = new ArrayList<>();
+    // StringBuffer to build the remaining non-matching text
+    public static StringBuffer nonMatchingText = new StringBuffer();
+    public static void checkForYoutubeMessage(String text){
+        // Pattern to match YouTube URLs
+        Pattern MY_PATTERN = Pattern.compile("((http(s)?://)?)(www\\.|music\\.)?((youtube\\.com\\/)|(youtu\\.be\\/))[\\S]+");
+
+        Matcher m = MY_PATTERN.matcher(text);
+        int lastEnd = 0;
+
+        while (m.find()) {
+            // Add the YouTube URL to the list
+            youtubeUrls.add(m.group());
+
+            // Append the non-matching text between the last end and current start
+            nonMatchingText.append(text.substring(lastEnd, m.start()));
+            lastEnd = m.end();
+        }
+
+        // Append the remaining text after the last match
+        nonMatchingText.append(text.substring(lastEnd));
     }
 
     public static void getAllEmojiID(String serverID) {
@@ -229,7 +275,7 @@ public class main {
         });
         t0.start();
     }
-    
+
     public static void spamAllMessageEmoji(String serverID, String emoji, int count, String channelID)
             throws InterruptedException, ExecutionException {
         Server server = main.api.getServerById(serverID).get();
@@ -244,7 +290,7 @@ public class main {
         }
         // }
     }
-    
+
     public static void spamAllMessageEmojiForUser(String serverID, String emoji, int count, String channelID, String userID)
             throws InterruptedException, ExecutionException {
         Server server = main.api.getServerById(serverID).get();
@@ -295,7 +341,7 @@ public class main {
             }
         }
     }
-    
+
     public static void ListServerTextChannel(String ServerID, boolean ShowHidden) {
         Server server = main.api.getServerById(ServerID).get();
         for (ServerTextChannel serverTextChannel : server.getTextChannels()) {
